@@ -1,16 +1,16 @@
 package firestorm
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
-	mapper "github.com/jschoedt/go-structmapper"
+
+	"cloud.google.com/go/firestore"
 )
 
 // FSClient is the client used to perform the CRUD actions
 type FSClient struct {
-	Client           *firestore.Client
-	MapToDB          *mapper.Mapper
-	MapFromDB        *mapper.Mapper
+	Client *firestore.Client
+	// MapToDB          *mapper.Mapper
+	// MapFromDB        *mapper.Mapper
 	IDKey, ParentKey string
 	Cache            *cacheWrapper
 	IsEntity         func(i interface{}) bool
@@ -31,11 +31,11 @@ func (fsc *FSClient) NewRequest() *Request {
 func New(client *firestore.Client, id, parent string) *FSClient {
 	c := &FSClient{}
 	c.Client = client
-	c.MapToDB = mapper.New()
-	c.MapToDB.MapFunc = c.DefaultToDBMapperFunc
-	c.MapFromDB = mapper.New()
-	c.MapFromDB.MapFunc = c.DefaultFromDBMapperFunc
-	c.MapFromDB.CaseSensitive = false
+	// c.MapToDB = mapper.New()
+	// c.MapToDB.MapFunc = c.DefaultToDBMapperFunc
+	// c.MapFromDB = mapper.New()
+	// c.MapFromDB.MapFunc = c.DefaultFromDBMapperFunc
+	// c.MapFromDB.CaseSensitive = false
 	c.IDKey = id
 	c.ParentKey = parent
 	c.Cache = newCacheWrapper(client, newDefaultCache(), nil)

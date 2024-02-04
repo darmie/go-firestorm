@@ -1,13 +1,15 @@
 package firestorm
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
+	"encoding/json"
 	"errors"
 	"log"
 	"reflect"
 	"strings"
 	"sync"
+
+	"cloud.google.com/go/firestore"
 )
 
 var transCacheKey = contextKey("transactionCache")
@@ -72,7 +74,9 @@ func (fsc *FSClient) getEntities(ctx context.Context, req *Request, sliceVal ref
 
 		for i, v := range res {
 			if len(v) > 0 {
-				fsc.MapFromDB.MapToStruct(v, slice.Index(i).Interface())
+				data, _ := json.Marshal(v)
+				json.Unmarshal(data, slice.Index(i).Interface())
+				// fsc.MapFromDB.MapToStruct(v, slice.Index(i).Interface())
 				result = append(result, slice.Index(i).Interface())
 			}
 		}
@@ -155,7 +159,13 @@ func (fsc *FSClient) queryEntities(ctx context.Context, req *Request, p firestor
 
 func (fsc *FSClient) createEntity(ctx context.Context, req *Request, entity interface{}) FutureFunc {
 	asyncFunc := func() error {
-		m, err := fsc.MapToDB.StructToMap(entity)
+		data, err := json.Marshal(entity)
+		if err != nil {
+			return err
+		}
+		m := map[string]interface{}{}
+		err = json.Unmarshal(data, &m)
+		// m, err := fsc.MapToDB.StructToMap(entity)
 		if err != nil {
 			return err
 		}
@@ -207,7 +217,12 @@ func (fsc *FSClient) createEntities(ctx context.Context, req *Request, sliceVal 
 
 func (fsc *FSClient) updateEntity(ctx context.Context, req *Request, entity interface{}) FutureFunc {
 	asyncFunc := func() error {
-		m, err := fsc.MapToDB.StructToMap(entity)
+		data, err := json.Marshal(entity)
+		if err != nil {
+			return err
+		}
+		m := map[string]interface{}{}
+		err = json.Unmarshal(data, &m)
 		if err != nil {
 			return err
 		}

@@ -3,11 +3,12 @@ package firestormtests
 import (
 	"context"
 	"errors"
-	"github.com/google/go-cmp/cmp"
-	"github.com/jschoedt/go-firestorm"
-	"github.com/jschoedt/go-firestorm/cache"
 	"testing"
 	"time"
+
+	"github.com/darmie/go-firestorm"
+	"github.com/darmie/go-firestorm/cache"
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCacheCRUD(t *testing.T) {

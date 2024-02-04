@@ -2,11 +2,13 @@ package firestorm
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
-	mapper "github.com/jschoedt/go-structmapper"
 	"reflect"
 	"strings"
 	"time"
+
+	mapper "github.com/jschoedt/go-structmapper"
 )
 
 // DefaultToDBMapperFunc default mapper that maps entity fields and values to be firestore fields and values
@@ -93,7 +95,9 @@ func (fsc *FSClient) toEntity(ctx context.Context, m map[string]interface{}, typ
 	}
 
 	p := reflect.New(typ)
-	err := fsc.MapFromDB.MapToStruct(m, p.Interface())
+	data, err := json.Marshal(m)
+	err = json.Unmarshal(data, p.Interface())
+	// err := fsc.MapFromDB.MapToStruct(m, p.Interface())
 
 	if isPtr {
 		return p, err

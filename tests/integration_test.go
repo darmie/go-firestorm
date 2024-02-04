@@ -1,35 +1,36 @@
 package firestormtests
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/google/go-cmp/cmp"
-	"github.com/jschoedt/go-firestorm"
 	"testing"
 	"time"
+
+	"cloud.google.com/go/firestore"
+	"github.com/darmie/go-firestorm"
+	"github.com/google/go-cmp/cmp"
 )
 
 type Person struct {
-	ID        string
-	Name      string
-	Spouse    *Person
-	Relations []*Relation // becomes nested as Relation is missing ID
+	ID        string      `json:"id"`
+	Name      string      `json:"name"`
+	Spouse    *Person     `json:"spouse"`
+	Relations []*Relation `json:"relations"` // becomes nested as Relation is missing ID
 }
 
 type Car struct {
-	ID         string
-	Make       string
-	Owner      *Person  // becomes firestore ref
-	Driver     Person   // becomes a nested entity since he is not a reference
-	Passengers []Person // becomes a firestore array of refs
-	Tags       []string
-	Numbers    []int
-	Year       time.Time
+	ID         string    `json:"id"`
+	Make       string    `json:"male"`
+	Owner      *Person   `json:"owner"`      // becomes firestore ref
+	Driver     Person    `json:"drive"`      // becomes a nested entity since he is not a reference
+	Passengers []Person  `json:"passengers"` // becomes a firestore array of refs
+	Tags       []string  `json:"tags"`
+	Numbers    []int     `json:"numbers"`
+	Year       time.Time `json:"year"`
 }
 
 type Relation struct {
-	Name    string
-	Friends []*Person // becomes a firestore array of refs
+	Name    string    `json:"name"`
+	Friends []*Person `json:"friends"` // becomes a firestore array of refs
 }
 
 func TestCRUD(t *testing.T) {

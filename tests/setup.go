@@ -2,11 +2,12 @@ package firestormtests
 
 import (
 	"context"
-	"firebase.google.com/go"
-	"github.com/jschoedt/go-firestorm"
-	"google.golang.org/api/option"
 	"io/ioutil"
 	"testing"
+
+	firebase "firebase.google.com/go"
+	"github.com/darmie/go-firestorm"
+	"google.golang.org/api/option"
 )
 
 var fsc *firestorm.FSClient

@@ -2,9 +2,10 @@ package cache
 
 import (
 	"context"
-	"github.com/jschoedt/go-firestorm"
-	"github.com/patrickmn/go-cache"
 	"time"
+
+	"github.com/darmie/go-firestorm"
+	"github.com/patrickmn/go-cache"
 )
 
 type InMemoryCache struct {
